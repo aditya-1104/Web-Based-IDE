@@ -1,4 +1,4 @@
-import { saveTemplateStructureToJson } from "@/features/playground/libs/path-to-json";
+import { readTemplateStructureFromJson, saveTemplateStructureToJson } from "@/features/playground/libs/path-to-json";
 import { db } from "@/lib/db";
 import { templatePaths } from "@/lib/template";
 import path from "path";
@@ -32,16 +32,13 @@ export async function GET(
   try {
     const inputPath = path.join(process.cwd(), templatePath);
     console.log("Input Path:", inputPath);
-    const outputFile = path.join("/output", `${templateKey}.json`);
+    const outputFile = path.join(process.cwd(), `/output/${templateKey}.json`);
 
     console.log("Output Path:", outputFile);
-    const result = await saveTemplateStructureToJson(inputPath, outputFile);
-  
-    
+     await saveTemplateStructureToJson(inputPath, outputFile);
+  const result = await readTemplateStructureFromJson(outputFile);
 
-    console.log("Template JSON saved:", result);
-
-    return Response.json({ success: true, file: `/${templateKey}.json` });
+    return Response.json({ success: true, templateJson: result}, { status: 200 });
   } catch (error) {
     console.error("Error generating template JSON:", error);
     return Response.json({ error: "Failed to generate template" }, { status: 500 });

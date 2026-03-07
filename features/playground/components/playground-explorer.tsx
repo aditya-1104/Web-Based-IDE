@@ -1,9 +1,13 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronRight, File, Folder } from "lucide-react"
+import * as React from "react";
+import { ChevronRight, File, Folder } from "lucide-react";
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
@@ -15,31 +19,31 @@ import {
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 // Using the provided interfaces
 interface TemplateFile {
-  filename: string
-  fileExtension: string
-  content: string
+  filename: string;
+  fileExtension: string;
+  content: string;
 }
 
 /**
  * Represents a folder in the template structure which can contain files and other folders
  */
 interface TemplateFolder {
-  folderName: string
-  items: (TemplateFile | TemplateFolder)[]
+  folderName: string;
+  items: (TemplateFile | TemplateFolder)[];
 }
 
 // Union type for items in the file system
-type TemplateItem = TemplateFile | TemplateFolder
+type TemplateItem = TemplateFile | TemplateFolder;
 
 interface TemplateFileTreeProps {
-  data: TemplateItem
-  onFileSelect?: (file: TemplateFile) => void
-  selectedFile?: TemplateFile
-  title?: string
+  data: TemplateItem;
+  onFileSelect?: (file: TemplateFile) => void;
+  selectedFile?: TemplateFile;
+  title?: string;
 }
 
 export function TemplateFileTree({
@@ -48,6 +52,8 @@ export function TemplateFileTree({
   selectedFile,
   title = "Files Explorer",
 }: TemplateFileTreeProps) {
+  const isRootFolder = data && typeof data === "object" && "folderName" in data;
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -55,53 +61,82 @@ export function TemplateFileTree({
           <SidebarGroupLabel>{title}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <TemplateNode item={data} onFileSelect={onFileSelect} selectedFile={selectedFile} level={0} />
+              {isRootFolder ? (
+                (data as TemplateFolder).items.map((child, index) => (
+                  <TemplateNode
+                    key={index}
+                    item={child}
+                    onFileSelect={onFileSelect}
+                    selectedFile={selectedFile}
+                    level={0}
+                    path=""
+                  />
+                ))
+              ) : (
+                <TemplateNode
+                  item={data}
+                  onFileSelect={onFileSelect}
+                  selectedFile={selectedFile}
+                  level={0}
+                  path=""
+                />
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
 
 interface TemplateNodeProps {
-  item: TemplateItem
-  onFileSelect?: (file: TemplateFile) => void
-  selectedFile?: TemplateFile
-  level: number
-  path?: string
+  item: TemplateItem;
+  onFileSelect?: (file: TemplateFile) => void;
+  selectedFile?: TemplateFile;
+  level: number;
+  path?: string;
 }
 
-function TemplateNode({ item, onFileSelect, selectedFile, level, path = "" }: TemplateNodeProps) {
-  // Check if the item is a folder by checking for the folderName property
-  const isFolder = "folderName" in item
+function TemplateNode({
+  item,
+  onFileSelect,
+  selectedFile,
+  level,
+  path = "",
+}: TemplateNodeProps) {
+  const isValidItem = item && typeof item === "object";
+  console.log("ITEM", item);
+  const isFolder = isValidItem && "folderName" in item;
 
-  // Default to open for first two levels
-  const [isOpen, setIsOpen] = React.useState(level < 2)
+  if (!isValidItem) return null; // Skip if item is null/undefined or primitive
 
   if (!isFolder) {
-    // This is a file
-    const file = item as TemplateFile
-    const fileName = `${file.filename}.${file.fileExtension}`
-    const currentPath = path ? `${path}/${fileName}` : fileName
+    const file = item as TemplateFile;
+    const fileName = `${file.filename}.${file.fileExtension}`;
+    const currentPath = path ? `${path}/${fileName}` : fileName;
 
     const isSelected =
-      selectedFile && selectedFile.filename === file.filename && selectedFile.fileExtension === file.fileExtension
+      selectedFile &&
+      selectedFile.filename === file.filename &&
+      selectedFile.fileExtension === file.fileExtension;
 
     return (
       <SidebarMenuItem>
-        <SidebarMenuButton isActive={isSelected} onClick={() => onFileSelect?.(file)}>
+        <SidebarMenuButton
+          isActive={isSelected}
+          onClick={() => onFileSelect?.(file)}
+        >
           <File className="h-4 w-4 mr-2 shrink-0" />
           <span>{fileName}</span>
         </SidebarMenuButton>
       </SidebarMenuItem>
-    )
+    );
   } else {
-    // This is a folder
-    const folder = item as TemplateFolder
-    const folderName = folder.folderName
-    const currentPath = path ? `${path}/${folderName}` : folderName
+    const folder = item as TemplateFolder;
+    const folderName = folder.folderName;
+    const currentPath = path ? `${path}/${folderName}` : folderName;
+    const [isOpen, setIsOpen] = React.useState(level < 2);
 
     return (
       <SidebarMenuItem>
@@ -133,6 +168,6 @@ function TemplateNode({ item, onFileSelect, selectedFile, level, path = "" }: Te
           </CollapsibleContent>
         </Collapsible>
       </SidebarMenuItem>
-    )
+    );
   }
 }

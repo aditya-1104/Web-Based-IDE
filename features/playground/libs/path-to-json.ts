@@ -237,15 +237,26 @@ export async function saveTemplateStructureToJson(
     await fs.promises.mkdir(outputDir, { recursive: true });
     
     // Write the JSON file
-    await fs.promises.writeFile(
+    const data = await fs.promises.writeFile(
       outputPath, 
       JSON.stringify(templateStructure, null, 2),
       'utf8'
     );
-    
     console.log(`Template structure saved to ${outputPath}`);
+
+
+    
   } catch (error) {
     throw new Error(`Error saving template structure: ${(error as Error).message}`);
+  }
+}
+
+export async function readTemplateStructureFromJson(filePath: string): Promise<TemplateFolder> {
+  try {
+    const data = await fs.promises.readFile(filePath, 'utf8');
+    return JSON.parse(data) as TemplateFolder;
+  } catch (error) {
+    throw new Error(`Error reading template structure: ${(error as Error).message}`);
   }
 }
 

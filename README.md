@@ -1,1 +1,1 @@
-
+Vibecode Editor is a fullstack, web-based IDE built with Next.js and Monaco Editor. It features real-time code execution using WebContainers, AI-powered code suggestions via locally running Ollama models, multi-stack templates, an integrated terminal, and a developer-focused UI for seamless coding in the browser.

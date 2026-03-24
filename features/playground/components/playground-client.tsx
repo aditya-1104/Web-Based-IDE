@@ -1,15 +1,17 @@
 import React from 'react'
 
 interface PlaygroundClientProps {
-  initialData?: {
-    templateFiles: Array<{ content: string }>;
-  } | null;
+    initialData: {
+    templateFiles: {
+        content: any; // Replace 'any' with a more specific type if needed
+    }[];
+} | null | undefined
 }
 
-const PlaygroundClient: React.FC<PlaygroundClientProps> = ({ initialData }) => {
-   return (
-     <div>PlaygroundClient</div>
-   )
- }
+const PlaygroundClient = ({initialData}: PlaygroundClientProps) => {
+  return (
+    <div>PlaygroundClient</div>
+  )
+}
 
 export default PlaygroundClient

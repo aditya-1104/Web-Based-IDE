@@ -298,10 +298,8 @@ const WebContainerPreview: React.FC<WebContainerPreviewProps> = ({
     <div className="h-full w-full flex flex-col">
       {!previewUrl ? (
         <div className="h-full flex flex-col">
-          <div className="w-full max-w-md p-6 rounded-lg bg-white dark:bg-gray-800 shadow-sm mx-auto">
-            <h3 className="text-lg font-medium mb-4">
-              Setting up your environment
-            </h3>
+          <div className="w-full max-w-md p-6 m-5 rounded-lg bg-white dark:bg-zinc-800 shadow-sm mx-auto">
+           
 
             <Progress
               value={(currentStep / totalSteps) * 100}

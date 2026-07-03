@@ -6,6 +6,13 @@ A browser-native IDE that runs Node.js entirely inside the browser tab — no ba
 
 ---
 
+### Home Page
+![Home Page](./image1.jpg)
+
+![](./image2.jpg)
+
+---
+
 ## Features
 
 - **Zero-setup execution** — Node.js runs in the browser via WebContainers (WASM). No Docker, no remote VM.

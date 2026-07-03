@@ -9,7 +9,8 @@ A browser-native IDE that runs Node.js entirely inside the browser tab — no ba
 ### Home Page
 ![Home Page](./image1.jpg)
 
-![](./image2.jpg)
+### AI Code Workspace
+![AI Code Workspace](./image2.jpg)
 
 ---
 

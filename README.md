@@ -5,6 +5,11 @@ A browser-native IDE that runs Node.js entirely inside the browser tab — no ba
 >  **Team project** — built by [Piyush](https://github.com/Piyush_253) · [Aditya](https://github.com/aditya-1104) · [Trayambak](https://github.com/HappyNoob0)
 
 ---
+## 🎥 Project Demo
+
+[▶ Watch Demo Video](https://github.com/aditya-1104/Web-Based-IDE/releases/download/v1.0.0/VibeCode.demo.mp4) 
+
+---
 
 ### Home Page
 ![Home Page](./image1.jpg)
